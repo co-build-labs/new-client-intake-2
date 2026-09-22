@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EGA New Client Intake MVP</title>
+  <style>
+    :root{--bg:#f7f7f5;--card:#fff;--text:#1f2937;--muted:#6b7280;--border:#e5e7eb;--accent:#4338ca;--accent2:#eef2ff;--ok:#166534;--warn:#92400e;--bad:#991b1b;--soft:#f3f4f6}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+    .shell{max-width:1050px;margin:0 auto;padding:28px 18px 64px}.top{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;margin-bottom:22px}.brand h1{font-size:28px;margin:0 0 6px}.brand p{margin:0;color:var(--muted);max-width:760px}.badge{background:var(--accent2);color:var(--accent);border:1px solid #c7d2fe;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+    .progress{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:18px 0 22px}.stepdot{height:7px;border-radius:999px;background:#ddd}.stepdot.active{background:var(--accent)}.stepdot.done{background:#8b5cf6}
+    .layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px}.side,.panel{background:var(--card);border:1px solid var(--border);border-radius:16px}.side{padding:16px;height:max-content;position:sticky;top:16px}.side button{width:100%;text-align:left;background:transparent;border:0;padding:11px 10px;border-radius:10px;color:var(--muted);font-size:14px;cursor:pointer}.side button.active{background:var(--accent2);color:var(--accent);font-weight:700}.side button.done::after{content:' ✓';float:right;color:var(--ok)}.side button:disabled{cursor:not-allowed;opacity:.65}
+    .panel{padding:26px}.panel h2{font-size:22px;margin:0 0 6px}.sub{color:var(--muted);margin:0 0 22px}.section{border-top:1px solid var(--border);padding-top:18px;margin-top:20px}.section:first-of-type{border-top:0;padding-top:0;margin-top:0}.section h3{font-size:16px;margin:0 0 12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}label{font-size:13px;font-weight:650;display:block;margin:0 0 6px}.req{color:var(--bad)}input,select,textarea{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:11px 12px;background:#fff;font:inherit;font-size:15px;color:var(--text)}textarea{min-height:95px;resize:vertical}input:focus,select:focus,textarea:focus{outline:3px solid #e0e7ff;border-color:#818cf8}.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);padding:11px 12px;border-radius:12px;margin:8px 0;background:#fff}.choice input{width:auto;margin-top:3px}.choice strong{display:block;font-size:14px}.choice span{display:block;font-size:12px;color:var(--muted);margin-top:2px}.notice{padding:12px 14px;border-radius:12px;background:#f8fafc;border:1px solid var(--border);font-size:13px;color:#475569}.notice.warn{background:#fff7ed;border-color:#fed7aa;color:var(--warn)}.notice.ok{background:#f0fdf4;border-color:#bbf7d0;color:var(--ok)}.notice.bad{background:#fef2f2;border-color:#fecaca;color:var(--bad)}
+    .actions{display:flex;justify-content:space-between;gap:10px;margin-top:24px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;font-size:14px}.btn.primary{background:var(--accent);color:#fff}.btn.secondary{background:var(--soft);color:#374151}.btn.ghost{background:#fff;border:1px solid var(--border);color:#374151}.btn:disabled{opacity:.5;cursor:not-allowed}
+    .q{padding:16px 0;border-bottom:1px solid var(--border)}.q:last-child{border-bottom:0}.qtitle{font-weight:750;margin-bottom:8px}.q small{color:var(--muted)}.radio-row{display:grid;gap:7px}.radio-row label{font-weight:500;display:flex;gap:8px;align-items:flex-start;margin:0}.radio-row input{width:auto;margin-top:3px}.scorecard{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;padding:14px;border-radius:14px;background:var(--accent2);margin-top:16px}.scorecard .big{font-size:28px;font-weight:800;color:var(--accent)}.scorecard small{display:block;color:var(--muted)}
+    .checkline{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:11px 0;border-bottom:1px solid var(--border)}.checkline input{width:auto;margin-top:4px}.checkline label{margin:0;font-weight:500}.notearea{margin:10px 0 18px 30px}.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.review-card{border:1px solid var(--border);border-radius:14px;padding:15px}.review-card h4{margin:0 0 8px;font-size:15px}.review-card dl{margin:0;display:grid;grid-template-columns:140px 1fr;gap:6px 10px;font-size:13px}.review-card dt{color:var(--muted)}.review-card dd{margin:0;font-weight:600}.missing{color:var(--bad);font-weight:800}.sigbox{border:1px dashed #9ca3af;border-radius:12px;padding:14px;margin-top:12px}.sigbox input{font-family:Georgia,serif;font-size:22px}.complete{padding:22px;border-radius:16px;background:#f0fdf4;border:1px solid #bbf7d0}.complete h3{color:var(--ok);margin-top:0}.jsonbox{white-space:pre-wrap;background:#111827;color:#e5e7eb;border-radius:12px;padding:14px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;max-height:340px;overflow:auto}.hidden{display:none!important}.pill{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800;background:var(--soft);color:#4b5563}.pill.ok{background:#dcfce7;color:#166534}.pill.warn{background:#ffedd5;color:#9a3412}
+    @media(max-width:800px){.layout{grid-template-columns:1fr}.side{position:static;display:flex;overflow:auto;gap:4px}.side button{min-width:145px}.grid2,.grid3,.review-grid{grid-template-columns:1fr}.scorecard{grid-template-columns:1fr 1fr}.top{flex-direction:column}.panel{padding:18px}.review-card dl{grid-template-columns:1fr}.progress{grid-template-columns:repeat(7,1fr)}}
+    @media print{body{background:#fff}.side,.progress,.actions,.top .badge,.noprint{display:none!important}.layout{display:block}.panel{border:0;padding:0}.shell{max-width:none;padding:0}.panel section{display:block!important}.panel section:not(#step6){display:none!important}.jsonbox{color:#111;background:#fff;border:1px solid #ccc;max-height:none}.complete{border:0;background:#fff;padding:0}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <div class="top">
+    <div class="brand"><h1>EGA New Client Intake MVP</h1><p>Focused only on the intake slice: disclosure/consent → client basics → investment profile → wealth-protection health check → completeness review → signatures → structured intake record.</p></div>
+    <div class="badge">STOP: Ready for needs analysis</div>
+  </div>
+  <div id="progress" class="progress"></div>
+  <div class="layout">
+    <nav class="side" id="nav"></nav>
+    <main class="panel">
+      <section id="step0">
+        <h2>1. Create new intake</h2><p class="sub">Advisor starts a new-client intake and sends the client a secure link in a production version. This prototype runs locally and does not transmit data.</p>
+        <div class="section"><h3>Advisor setup</h3><div class="grid2">
+          <div><label for="advisor">Advisor <span class="req">*</span></label><select id="advisor"><option value="">Select advisor</option><option>Timothy Tjia-Gan</option><option>Chun-Ting Ho, CFA</option><option>Timothy Tjia-Gan & Chun-Ting Ho, CFA</option></select></div>
+          <div><label for="clientNameSetup">Client name <span class="req">*</span></label><input id="clientNameSetup" placeholder="e.g., Alex Chen"></div>
+          <div><label for="clientEmailSetup">Client email <span class="req">*</span></label><input id="clientEmailSetup" type="email" placeholder="alex@example.com"></div>
+          <div><label for="intakeDate">Intake date <span class="req">*</span></label><input id="intakeDate" type="date"></div>
+        </div></div>
+        <div class="notice">In production: create a one-time secure link, expire it after completion, encrypt data in transit/at rest, and maintain an audit trail.</div>
+        <div class="actions"><span></span><button class="btn primary" data-next="1">Start client intake →</button></div>
+      </section>
+
+      <section id="step1" class="hidden">
+        <h2>2. Advisor disclosure + privacy consent</h2><p class="sub">Put consent before collecting detailed financial/health information. The content below is condensed from the uploaded EGA disclosure and privacy statement.</p>
+        <div class="section"><h3>Advisor disclosure</h3>
+          <div class="notice"><strong>Licensing and relationships.</strong> The uploaded disclosure states that Timothy Tjia-Gan and Chun-Ting Ho, CFA are licensed life insurance advisors in B.C., operate under EGA Financial Inc., and hold broker contracts with multiple insurers. It states that no listed insurer owns EGA and EGA does not hold an ownership interest in an insurer.</div>
+          <div class="notice" style="margin-top:10px"><strong>Compensation and conflict disclosure.</strong> The disclosure says the advisors may receive sales remuneration, renewals/service fees, and potentially other compensation, and states recommendations are based on an assessment of client needs and interests.</div>
+          <div class="choice"><input id="ackDisclosure" type="checkbox"><div><strong>I acknowledge the Advisor Disclosure.</strong><span>Required to complete this intake prototype.</span></div></div>
+        </div>
+        <div class="section"><h3>Privacy statement and consent</h3>
+          <div class="notice">The uploaded privacy statement says EGA collects and retains personal, financial, health and identity-verification information to provide advice and obtain products; may share relevant information with insurers, intermediary brokerage firms, CRM vendors and financial-analysis software vendors; and maintains safeguards and access/correction rights.</div>
+          <div class="choice"><input id="ackPrivacy" type="checkbox"><div><strong>I consent to the collection, use and disclosure described in the Privacy Statement.</strong><span>Required before continuing with detailed intake information.</span></div></div>
+          <div class="choice"><input id="casl" type="checkbox"><div><strong>Optional CASL consent:</strong><span>I agree to receive commercial electronic messages.</span></div></div>
+          <div id="caslFields" class="grid2 hidden" style="margin-top:10px"><div><label>Client initials</label><input id="caslInitials" maxlength="6"></div><div><label>Email for CEMs</label><input id="caslEmail" type="email"></div></div>
+        </div>
+        <div class="notice warn">Production note: the exact electronic-signature implementation and wording should be reviewed by EGA's compliance/legal team. This prototype preserves separate consent events rather than assuming one click satisfies every document.</div>
+        <div class="actions"><button class="btn secondary" data-prev="0">← Back</button><button class="btn primary" data-next="2">Continue →</button></div>
+      </section>
+
+      <section id="step2" class="hidden">
+        <h2>3. Client record</h2><p class="sub">Capture the minimum reusable client facts once. These basic record fields are proposed for the MVP; they are not all present on the supplied forms.</p>
+        <div class="grid2">
+          <div><label>Full legal name <span class="req">*</span></label><input id="fullName"></div>
+          <div><label>Date of birth <span class="req">*</span></label><input id="dob" type="date"></div>
+          <div><label>Email <span class="req">*</span></label><input id="email" type="email"></div>
+          <div><label>Phone <span class="req">*</span></label><input id="phone" type="tel"></div>
+          <div><label>Province <span class="req">*</span></label><select id="province"><option value="">Select</option><option>British Columbia</option><option>Alberta</option><option>Saskatchewan</option><option>Manitoba</option><option>Ontario</option><option>Quebec</option><option>New Brunswick</option><option>Nova Scotia</option><option>Prince Edward Island</option><option>Newfoundland and Labrador</option><option>Yukon</option><option>Northwest Territories</option><option>Nunavut</option></select></div>
+          <div><label>Occupation</label><input id="occupation"></div>
+          <div style="grid-column:1/-1"><label>Address</label><input id="address" placeholder="Street, city, postal code"></div>
+        </div>
+        <div class="section"><h3>Optional advisor/discovery notes</h3><textarea id="discoveryNotes" placeholder="Paste a few notes from the discovery call. A production AI layer could use this to prefill structured fields and generate follow-up questions."></textarea></div>
+        <div class="notice warn">Important: the uploaded file titled “KYC questionnaire” is an investment-risk profile questionnaire. It does not contain a full identity-verification / AML / source-of-funds process. This MVP therefore does not claim to complete FINTRAC KYC.</div>
+        <div class="actions"><button class="btn secondary" data-prev="1">← Back</button><button class="btn primary" data-next="3">Continue →</button></div>
+      </section>
+
+      <section id="step3" class="hidden">
+        <h2>4. Investment profile</h2><p class="sub">Exact question structure and scores follow the uploaded EGA investment-profile questionnaire. The tool totals the score automatically.</p>
+        <div id="riskQuestions"></div>
+        <div class="scorecard"><div><small>Total score</small><div class="big" id="riskScore">0</div></div><div><small>Equities</small><div class="big" id="equity">—</div></div><div><small>Fixed income</small><div class="big" id="fixed">—</div></div><div><small>Cash</small><div class="big" id="cash">—</div></div></div>
+        <div id="riskBoundary" class="notice warn hidden" style="margin-top:12px">The source table uses overlapping labels at some exact boundary values (e.g., 24, 32, 42, 52). The prototype applies half-open bands; confirm the intended production rule with EGA.</div>
+        <div class="actions"><button class="btn secondary" data-prev="2">← Back</button><button class="btn primary" data-next="4">Continue →</button></div>
+      </section>
+
+      <section id="step4" class="hidden">
+        <h2>5. Wealth Protection Health Check</h2><p class="sub">The ten checklist statements below follow the uploaded Pilot Individual Wealth Protection Health Check. The form shows a “Score” field but does not define a scoring method, so this MVP reports completion count only.</p>
+        <div id="healthQuestions"></div>
+        <div class="section"><h3>Advisor/client notes</h3><textarea id="healthGeneralNotes" placeholder="Notes, gaps, follow-up topics..."></textarea></div>
+        <div class="scorecard" style="grid-template-columns:1fr 2fr"><div><small>Checked items</small><div class="big" id="healthCount">0/10</div></div><div><small>Interpretation</small><div style="font-weight:700;margin-top:6px">Completion count only — no source scoring methodology supplied.</div></div></div>
+        <div class="actions"><button class="btn secondary" data-prev="3">← Back</button><button class="btn primary" data-next="5">Review intake →</button></div>
+      </section>
+
+      <section id="step5" class="hidden">
+        <h2>6. Completeness review + signatures</h2><p class="sub">The system checks missing required items, shows the intake summary, and captures client/advisor attestations before marking intake ready for needs analysis.</p>
+        <div id="missingBox"></div>
+        <div class="review-grid" style="margin-top:14px">
+          <div class="review-card"><h4>Client</h4><dl id="reviewClient"></dl></div>
+          <div class="review-card"><h4>Investment profile</h4><dl id="reviewRisk"></dl></div>
+          <div class="review-card"><h4>Health check</h4><dl id="reviewHealth"></dl></div>
+          <div class="review-card"><h4>Consents</h4><dl id="reviewConsent"></dl></div>
+        </div>
+        <div class="section"><h3>Client confirmation</h3>
+          <div class="choice"><input id="confirmAccurate" type="checkbox"><div><strong>I confirm the information in this intake is accurate to the best of my knowledge.</strong></div></div>
+          <div class="choice"><input id="confirmRisk" type="checkbox"><div><strong>I confirm my responses to the investment-profile questionnaire.</strong></div></div>
+          <div class="sigbox"><label>Client electronic signature / typed name <span class="req">*</span></label><input id="clientSignature" placeholder="Type full name"></div>
+        </div>
+        <div class="section"><h3>Advisor review</h3>
+          <div class="choice"><input id="advisorReviewed" type="checkbox"><div><strong>Advisor has reviewed the completed intake and investment profile.</strong><span>This is the intake endpoint; recommendations/needs analysis begin after this.</span></div></div>
+          <div class="sigbox"><label>Advisor signature / typed name <span class="req">*</span></label><input id="advisorSignature" placeholder="Advisor name"></div>
+        </div>
+        <div class="actions"><button class="btn secondary" data-prev="4">← Back</button><button id="completeBtn" class="btn primary">Complete intake →</button></div>
+      </section>
+
+      <section id="step6" class="hidden">
+        <h2>7. Intake complete</h2><p class="sub">Output is a structured new-client intake record ready for advisor needs analysis. No carrier recommendation, quote, application or servicing workflow is included.</p>
+        <div class="complete"><h3>✓ Ready for needs analysis</h3><p>The intake package has the disclosure/privacy consent events, client record, investment-profile answers and score, health-check responses, and client/advisor attestations.</p></div>
+        <div class="section"><h3>Structured client record</h3><div id="jsonOut" class="jsonbox"></div></div>
+        <div class="actions noprint"><button class="btn secondary" id="resetBtn">Start another intake</button><div><button class="btn ghost" id="downloadBtn">Download JSON</button> <button class="btn primary" id="printBtn">Print / Save PDF</button></div></div>
+      </section>
+    </main>
+  </div>
+</div>
+<script>
+(() => {
+  const steps = ['Create intake','Disclosure & consent','Client record','Investment profile','Health check','Review & sign','Complete'];
+  let current = 0;
+  const el = id => document.getElementById(id);
+  const nav = el('nav'), progress = el('progress');
+  steps.forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=(i+1)+'. '+s; b.dataset.step=i; b.disabled=i>0; b.addEventListener('click',()=>show(i)); nav.appendChild(b); const d=document.createElement('div'); d.className='stepdot'; progress.appendChild(d); });
+  function show(i){ document.querySelectorAll('main.panel > section').forEach((s,idx)=>s.classList.toggle('hidden',idx!==i)); current=i; [...nav.children].forEach((b,idx)=>{b.classList.toggle('active',idx===i); b.classList.toggle('done',idx<i);}); [...progress.children].forEach((d,idx)=>{d.className='stepdot '+(idx<i?'done':idx===i?'active':'');}); if(i===5) renderReview(); if(i===6) renderComplete(); window.scrollTo({top:0,behavior:'smooth'}); }
+  show(0);
+  const today = new Date(); el('intakeDate').value = today.toISOString().slice(0,10);
+  el('casl').addEventListener('change',()=>el('caslFields').classList.toggle('hidden',!el('casl').checked));
+  el('clientNameSetup').addEventListener('input',()=>{ if(!el('fullName').value) el('fullName').value=el('clientNameSetup').value; });
+  el('clientEmailSetup').addEventListener('input',()=>{ if(!el('email').value) el('email').value=el('clientEmailSetup').value; });
+  el('advisor').addEventListener('change',()=>{ if(!el('advisorSignature').value) el('advisorSignature').value=el('advisor').value; });
+  el('caslEmail').addEventListener('focus',()=>{ if(!el('caslEmail').value) el('caslEmail').value=el('email').value||el('clientEmailSetup').value; });
+
+  const riskQs = [
+    {t:'1. Net worth range', o:[['Less than $25,000',1],['$25,000 to $50,000',3],['$50,001 to $100,000',5],['$100,001 to $250,000',7],['Greater than $250,000',10]]},
+    {t:'2. Knowing that higher returns come with higher risk, what is your rate of return objective?',o:[['Less than 4%',1],['4% to 6%',5],['6% to 9%',10],['9% to 12%',15]]},
+    {t:'3. Investment time line',o:[['0 to 2 years',1],['2 to 5 years',3],['5 to 10 years',5],['10 to 20 years',10],['Beyond 20 years',15]]},
+    {t:'4. Access to money in the short term',o:[['Very important',1],['Important',2],['Slightly important',4],['Not important at all',5]]},
+    {t:'5. Comfort with volatility',o:[['I would sell my investment if it declined by 5%',1],['I would sell my investment if it declined by 10%',2],['I would sell my investment if it declined by 15%',3],['I would sell my investment if it declined by 20%',4],['I would not sell my investment if it declined',5]]},
+    {t:'6. Need for immediate income from investment',o:[['Very important',1],['Important',2],['Only slightly important',3],['Not important',4]]},
+    {t:'7. Sensitivity to adverse financial news in the media',o:[['I become very nervous and usually sell my investments',1],['I become fearful and consider selling my investments',2],['I would be uncomfortable but hold my investments',3],['I hold my investments calmly',4]]},
+    {t:'8. Performance numbers',o:[['I am most concerned with monthly performance numbers',1],['I am most concerned with quarterly performance numbers',3],['I am most concerned with annual performance numbers',5]]},
+    {t:'9. Attitude towards risk',o:[['I know that certain investments are riskier than others.',1],['I know about different investment types and their risks',2],['I understand the return and risks involved with types of investments and their fluctuations over time',3],['I keep a constant eye on stock markets',4]]}
+  ];
+  const rq = el('riskQuestions');
+  riskQs.forEach((q,qi)=>{ const wrap=document.createElement('div'); wrap.className='q'; wrap.innerHTML=`<div class="qtitle">${q.t} <span class="req">*</span></div>`; const rr=document.createElement('div'); rr.className='radio-row'; q.o.forEach(([label,score],oi)=>{ const id=`r${qi}_${oi}`; const l=document.createElement('label'); l.innerHTML=`<input type="radio" name="risk${qi}" id="${id}" value="${score}" data-label="${label.replace(/"/g,'&quot;')}"><span>${label} <small>(${score})</small></span>`; rr.appendChild(l); }); wrap.appendChild(rr); rq.appendChild(wrap); });
+  rq.addEventListener('change',calcRisk);
+  function calcRisk(){ let score=0,complete=true; riskQs.forEach((q,i)=>{const c=document.querySelector(`input[name="risk${i}"]:checked`); if(!c) complete=false; else score+=Number(c.value)}); el('riskScore').textContent=score; let a=['—','—','—']; if(complete){ if(score<12)a=['15%','65%','20%']; else if(score<24)a=['25%','60%','15%']; else if(score<32)a=['40%','50%','10%']; else if(score<42)a=['55%','40%','5%']; else if(score<52)a=['65%','30%','5%']; else a=['85%','15%','0%']; } [el('equity'),el('fixed'),el('cash')].forEach((x,i)=>x.textContent=a[i]); el('riskBoundary').classList.toggle('hidden',![24,32,42,52].includes(score)); return {score,complete,allocation:{equities:a[0],fixedIncome:a[1],cash:a[2]}}; }
+
+  const health = [
+    'I have 4–6 months worth of expenses in liquid assets, and all my expensive debts are being paid or paid off',
+    'I review my recurring expenses annually (home insurance, phone, internet, subscriptions, etc.)',
+    'I have enough budget allocated for hobbies and fun',
+    'I am earning at least 2% back on all my spending',
+    'My employer pensions and benefits are funded to match my current needs (HSA, medical, legal)',
+    'I am fully utilizing the tax-advantaged accounts available to me (TFSA, RRSP, FHSA)',
+    'I am actively contributing monthly/annually into investments aligned with my long-term growth goals',
+    'I am financially protected if cancer, heart attack, stroke or heart disease impacts my ability to live and work',
+    'If I cannot work due to injury or disability, I am financially protected with the assets and insurance policies that I have',
+    'I have documented all my asset/account locations, created a will/POA, and shared these details with someone I trust'
+  ];
+  const hq = el('healthQuestions');
+  health.forEach((text,i)=>{ const w=document.createElement('div'); w.className='checkline'; w.innerHTML=`<input type="checkbox" id="h${i}"><div><label for="h${i}">${text}</label><div class="notearea"><textarea id="hn${i}" placeholder="Optional note"></textarea></div></div>`; hq.appendChild(w); });
+  hq.addEventListener('change',calcHealth); function calcHealth(){const count=health.filter((_,i)=>el('h'+i).checked).length; el('healthCount').textContent=count+'/10'; return count;}
+
+  function requireSetup(){ const missing=[]; if(!el('advisor').value)missing.push('advisor'); if(!el('clientNameSetup').value.trim())missing.push('client name'); if(!el('clientEmailSetup').value.trim())missing.push('client email'); if(!el('intakeDate').value)missing.push('intake date'); return missing; }
+  function requireConsent(){ const m=[]; if(!el('ackDisclosure').checked)m.push('advisor disclosure acknowledgement'); if(!el('ackPrivacy').checked)m.push('privacy consent'); if(el('casl').checked && !el('caslInitials').value.trim())m.push('CASL initials'); return m; }
+  function requireProfile(){ const m=[]; ['fullName','dob','email','phone','province'].forEach(id=>{if(!el(id).value.trim())m.push(document.querySelector(`[id="${id}"]`).previousElementSibling?.textContent?.replace('*','').trim()||id)}); return m; }
+  function missingAll(){ const m=[...requireSetup(),...requireConsent(),...requireProfile()]; riskQs.forEach((q,i)=>{if(!document.querySelector(`input[name="risk${i}"]:checked`))m.push(`investment profile question ${i+1}`)}); return [...new Set(m)]; }
+
+  document.querySelectorAll('[data-next]').forEach(b=>b.addEventListener('click',()=>{ const next=Number(b.dataset.next); let m=[]; if(current===0)m=requireSetup(); if(current===1)m=requireConsent(); if(current===2)m=requireProfile(); if(current===3){riskQs.forEach((q,i)=>{if(!document.querySelector(`input[name="risk${i}"]:checked`))m.push(`question ${i+1}`)});} if(m.length){alert('Please complete: '+m.join(', '));return;} [...nav.children][next].disabled=false; show(next); }));
+  document.querySelectorAll('[data-prev]').forEach(b=>b.addEventListener('click',()=>show(Number(b.dataset.prev))));
+
+  function getRiskAnswers(){return riskQs.map((q,i)=>{const c=document.querySelector(`input[name="risk${i}"]:checked`);return {question:q.t,answer:c?c.dataset.label:null,score:c?Number(c.value):null};});}
+  function getHealth(){return health.map((q,i)=>({item:q,checked:el('h'+i).checked,note:el('hn'+i).value.trim()}));}
+  function getData(){ const r=calcRisk(); return {
+      schemaVersion:'0.1', status:'ready_for_needs_analysis', intake:{date:el('intakeDate').value,advisor:el('advisor').value},
+      client:{fullName:el('fullName').value.trim(),dateOfBirth:el('dob').value,email:el('email').value.trim(),phone:el('phone').value.trim(),province:el('province').value,address:el('address').value.trim(),occupation:el('occupation').value.trim(),discoveryNotes:el('discoveryNotes').value.trim()},
+      consents:{advisorDisclosure:{acknowledged:el('ackDisclosure').checked},privacy:{consented:el('ackPrivacy').checked},casl:{consented:el('casl').checked,initials:el('caslInitials').value.trim(),email:el('caslEmail').value.trim()}},
+      investmentProfile:{answers:getRiskAnswers(),totalScore:r.score,allocation:r.allocation,sourceBoundaryRule:'prototype uses half-open bands; confirm exact boundary handling'},
+      wealthProtectionHealthCheck:{responses:getHealth(),checkedCount:calcHealth(),scoringNote:'Source form provides a Score field but no scoring methodology; prototype uses completion count only.',generalNotes:el('healthGeneralNotes').value.trim()},
+      attestations:{client:{informationAccurate:el('confirmAccurate').checked,investmentProfileConfirmed:el('confirmRisk').checked,signature:el('clientSignature').value.trim(),signedAt:new Date().toISOString()},advisor:{reviewed:el('advisorReviewed').checked,signature:el('advisorSignature').value.trim(),reviewedAt:new Date().toISOString()}},
+      limitations:['This intake is not a full FINTRAC identity-verification/KYC workflow.','Electronic-signature implementation and legal sufficiency require production compliance review.','No needs analysis, product recommendation, quote, carrier application, or MGA submission is included.']
+    }; }
+  function renderReview(){ const missing=missingAll(); el('missingBox').innerHTML=missing.length?`<div class="notice bad"><strong>Missing required intake items:</strong> ${missing.map(x=>`<span class="missing">${x}</span>`).join(', ')}</div>`:`<div class="notice ok"><strong>All required intake questions are complete.</strong> Review and sign below.</div>`; const r=calcRisk(), h=calcHealth(); el('reviewClient').innerHTML=`<dt>Name</dt><dd>${el('fullName').value||'—'}</dd><dt>Email</dt><dd>${el('email').value||'—'}</dd><dt>Province</dt><dd>${el('province').value||'—'}</dd><dt>Advisor</dt><dd>${el('advisor').value||'—'}</dd>`; el('reviewRisk').innerHTML=`<dt>Total score</dt><dd>${r.score}</dd><dt>Equities</dt><dd>${r.allocation.equities}</dd><dt>Fixed income</dt><dd>${r.allocation.fixedIncome}</dd><dt>Cash</dt><dd>${r.allocation.cash}</dd>`; el('reviewHealth').innerHTML=`<dt>Checked</dt><dd>${h}/10</dd><dt>Scoring</dt><dd>Completion count only</dd>`; el('reviewConsent').innerHTML=`<dt>Disclosure</dt><dd>${el('ackDisclosure').checked?'Acknowledged':'Missing'}</dd><dt>Privacy</dt><dd>${el('ackPrivacy').checked?'Consented':'Missing'}</dd><dt>CASL</dt><dd>${el('casl').checked?'Yes':'No'}</dd>`; }
+  el('completeBtn').addEventListener('click',()=>{ const m=missingAll(); if(m.length){alert('Please complete missing intake fields first.');return;} const sm=[]; if(!el('confirmAccurate').checked)sm.push('client accuracy confirmation'); if(!el('confirmRisk').checked)sm.push('investment profile confirmation'); if(!el('clientSignature').value.trim())sm.push('client signature'); if(!el('advisorReviewed').checked)sm.push('advisor review'); if(!el('advisorSignature').value.trim())sm.push('advisor signature'); if(sm.length){alert('Please complete: '+sm.join(', '));return;} [...nav.children][6].disabled=false; show(6); });
+  function renderComplete(){el('jsonOut').textContent=JSON.stringify(getData(),null,2);}
+  el('downloadBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(getData(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(el('fullName').value.trim().replace(/[^a-z0-9]+/gi,'_')||'client')+'_intake.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);});
+  el('printBtn').addEventListener('click',()=>window.print());
+  el('resetBtn').addEventListener('click',()=>location.reload());
+})();
+</script>
+</body>
+</html>
